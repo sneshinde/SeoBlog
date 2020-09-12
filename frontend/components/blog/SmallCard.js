@@ -11,7 +11,7 @@ const SmallCard = ({ blog }) => {
                     <a>
                         <img
                             className="img img-fluid"
-                            style={{ maxHeight: 'auto', width: '100%' }}
+                            style={{ height: '250px', width: '100%' }}
                             src={`${API}/api/blog/photo/${blog.slug}`}
                             alt={blog.title}
                         />
@@ -32,8 +32,8 @@ const SmallCard = ({ blog }) => {
 
             <div className="card-body">
                 Posted {moment(blog.updatedAt).fromNow()} by{' '}
-                <Link href={`/`}>
-                    <a className="float-right">{blog.postedBy.name}</a>
+                <Link href={`/profile/${blog.postedBy.userName}`}>
+                    <a>{blog.postedBy.userName}</a>
                 </Link>
             </div>
         </div>

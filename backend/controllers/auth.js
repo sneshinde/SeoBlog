@@ -1,7 +1,9 @@
 const User = require('../models/user');
+const Blog = require('../models/blog');
 const shortId = require('shortId');
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
+const { errorHandler } = require('../helpers/dbErrorHandler');
 
 exports.signup = (req, res) => {
     console.log("n server signup");
@@ -15,7 +17,7 @@ exports.signup = (req, res) => {
    // console.log(user);
     const { name, email, password } = req.body;
     let userName = shortId.generate();
-    let profile = `${process.env.CLIENT_URL}/profile/userName`;
+    let profile = `${process.env.CLIENT_URL}/profile/${userName}`;
 
     let newUser = new User({ name, email, password, profile, userName });
     newUser.save((err, success) => {
@@ -106,3 +108,20 @@ exports.adminMiddlemare = (req, res, next) => {
         next();
     })
 }
+exports.canUpdateDeleteBlog = (req, res, next) => {
+    const slug = req.params.slug.toLowerCase();
+    Blog.findOne({ slug }).exec((err, data) => {
+        if (err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            });
+        }
+        let authorizedUser = data.postedBy._id.toString() === req.profile._id.toString();
+        if (!authorizedUser) {
+            return res.status(400).json({
+                error: 'You are not authorized'
+            });
+        }
+        next();
+    });
+};

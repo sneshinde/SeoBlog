@@ -101,7 +101,7 @@ exports.list = (req, res) => {
     Blog.find({})
         .populate('categories', '_id name slug')
         .populate('tags', '_id name slug')
-        .populate('postedBy', '_id name username')
+        .populate('postedBy', '_id name userName')
         .select('_id title slug excerpt categories tags postedBy createdAt updatedAt')
         .exec((err, data) => {
             if (err) {
@@ -124,7 +124,7 @@ exports.listAllBlogsCategoriesTags = (req, res) => {
     Blog.find({})
         .populate('categories', '_id name slug')
         .populate('tags', '_id name slug')
-        .populate('postedBy', '_id name username profile')
+        .populate('postedBy', '_id name userName profile')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -165,7 +165,7 @@ exports.read = (req, res) => {
     Blog.findOne({ slug })
         .populate('categories', '_id name slug')
         .populate('tags', '_id name slug')
-        .populate('postedBy', '_id name username')
+        .populate('postedBy', '_id name userName')
         .select('_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt')
         .exec((err, data) => {
             if (err) {
@@ -274,7 +274,7 @@ exports.listRelated = (req, res) => {
 
     Blog.find({ _id: { $ne: _id }, categories: { $in: categories } })
         .limit(limit)
-        .populate('postedBy', '_id name profile')
+        .populate('postedBy', '_id userName profile')
         .select('title slug excerpt postedBy createdAt updatedAt')
         .exec((err, blogs) => {
             if (err) {
@@ -284,4 +284,47 @@ exports.listRelated = (req, res) => {
             }
             res.json(blogs);
         });
+};
+
+exports.listSearch = (req, res) => {
+    console.log(req.query);
+    const { search } = req.query;
+    if (search) {
+        Blog.find(
+            {
+                $or: [{ title: { $regex: search, $options: 'i' } }, { body: { $regex: search, $options: 'i' } }]
+            },
+            (err, blogs) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: errorHandler(err)
+                    });
+                }
+                res.json(blogs);
+            }
+        ).select('-photo -body');
+    }
+};
+exports.listByUser = (req, res) => {
+    User.findOne({ userName: req.params.userName }).exec((err, user) => {
+        if (err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            });
+        }
+        let userId = user._id;
+        Blog.find({ postedBy: userId })
+            .populate('categories', '_id name slug')
+            .populate('tags', '_id name slug')
+            .populate('postedBy', '_id name userName')
+            .select('_id title slug postedBy createdAt updatedAt')
+            .exec((err, data) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: errorHandler(err)
+                    });
+                }
+                res.json(data);
+            });
+    });
 };

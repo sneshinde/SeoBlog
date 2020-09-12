@@ -90,7 +90,9 @@ const SingleBlog = ({ blog, query }) => {
                                 <div className="container">
                                     <h1 className="display-2 pb-3 pt-3 text-center font-weight-bold">{blog.title}</h1>
                                     <p className="lead mt-3 mark">
-                                        Written by {blog.postedBy.name} | Published {moment(blog.updatedAt).fromNow()}
+                                        Written by <Link href={`/profile/${blog.postedBy.userName}`}>
+                                            <a>{blog.postedBy.userName}</a>
+                                        </Link> | Published {moment(blog.updatedAt).fromNow()}
                                     </p>
 
                                     <div className="pb-3">

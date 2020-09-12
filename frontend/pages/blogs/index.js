@@ -125,7 +125,7 @@ Blogs.getInitialProps = () => {
     let skip = 0;
     let limit = 2;
     return listBlogsWithCategoriesAndTags(skip, limit).then(data => {
-        console.log(data);
+       // console.log(data);
 
         if (data.error) {
             console.log(data.error);
