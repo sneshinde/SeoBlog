@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { create, list, listAllBlogsCategoriesTags, read, remove, update, photo, listRelated, listSearch, listByUser } = require('../controllers/blog');
-const { requireSignin, adminMiddlemare, canUpdateDeleteBlog } = require('../controllers/auth');
+const { requireSignin, adminMiddlemare, authMiddlemare, canUpdateDeleteBlog } = require('../controllers/auth');
 
 router.post('/blog', requireSignin, adminMiddlemare, create);
 router.get('/blogs', list);
@@ -14,9 +14,9 @@ router.post('/blogs/related', listRelated);
 router.get('/blogs/search', listSearch);
 
 // auth user blog crud
-router.post('/user/blog', requireSignin, adminMiddlemare, create);
+router.post('/user/blog', requireSignin, authMiddlemare, create);
 router.get('/:userName/blogs', listByUser);
-router.delete('/user/blog/:slug', requireSignin, adminMiddlemare, canUpdateDeleteBlog, remove);
-router.put('/user/blog/:slug', requireSignin, adminMiddlemare, canUpdateDeleteBlog, update);
+router.delete('/user/blog/:slug', requireSignin, authMiddlemare, canUpdateDeleteBlog, remove);
+router.put('/user/blog/:slug', requireSignin, authMiddlemare, canUpdateDeleteBlog, update);
 
 module.exports = router;

@@ -5,17 +5,17 @@ import { getCookie, isAuth } from '../../actions/auth';
 import { list, removeBlog } from '../../actions/blog';
 import moment from 'moment';
 
-const BlogRead = () => {
+const BlogRead = ({ userName }) => {
     const [blogs, setBlogs] = useState([]);
     const [message, setMessage] = useState('');
     const token = getCookie('token');
 
     useEffect(() => {
-        loadBlogs();
+        loadBlogs(userName);
     }, []);
 
-    const loadBlogs = () => {
-        list().then(data => {
+    const loadBlogs = (userName) => {
+        list(userName).then(data => {
             if (data.error) {
                 console.log(data.error);
             } else {
@@ -62,8 +62,8 @@ const BlogRead = () => {
                 <div key={i} className="pb-5">
                     <h3>{blog.title}</h3>
                     <p className="mark">
-                    Writt,,en by ...<Link href={`/profile/${blog.postedBy.username}`}>
-                                            <a>{blog.postedBy.username}</a>
+                    Written by <Link href={`/profile/${blog.postedBy.userName}`}>
+                                            <a>{blog.postedBy.userName}</a>
                                         </Link> | Published {moment(blog.updatedAt).fromNow()}
                     </p>
                     <button className="btn btn-sm btn-danger" onClick={() => deleteConfirm(blog.slug)}>

@@ -1,14 +1,15 @@
 import fetch from 'isomorphic-fetch';
 import {API} from '../config';
 import queryString from 'query-string';
+import { isAuth, handleResponse } from './auth';
 
 export const createBlog = (blog, token) => {
     let createBlogEndpoint;
 
     if (isAuth() && isAuth().role === 1) {
-        createBlogEndpoint = `${API}/blog`;
+        createBlogEndpoint = `${API}/api/blog`;
     } else if (isAuth() && isAuth().role === 0) {
-        createBlogEndpoint = `${API}/user/blog`;
+        createBlogEndpoint = `${API}/api/user/blog`;
     }
     return fetch(`${createBlogEndpoint}`, {
         method: 'POST',
@@ -19,6 +20,7 @@ export const createBlog = (blog, token) => {
         body: blog
     })
     .then(response => {
+        handleResponse(response);
         return response.json();
     })
     .catch(err => {
@@ -67,8 +69,16 @@ export const listRelated = blog => {
         })
         .catch(err => console.log(err));
 };
-export const list = () => {
-    return fetch(`${API}/api/blogs`, {
+export const list = userName => {
+    let listBlogsEndpoint;
+
+    if (userName) {
+        listBlogsEndpoint = `${API}/api/${userName}/blogs`;
+    } else {
+        listBlogsEndpoint = `${API}/api/blogs`;
+    }
+
+    return fetch(`${listBlogsEndpoint}`, {
         method: 'GET'
     })
         .then(response => {
@@ -81,9 +91,9 @@ export const removeBlog = (slug, token) => {
     let deleteBlogEndpoint;
 
     if (isAuth() && isAuth().role === 1) {
-        deleteBlogEndpoint = `${API}/blog/${slug}`;
+        deleteBlogEndpoint = `${API}/api/blog/${slug}`;
     } else if (isAuth() && isAuth().role === 0) {
-        deleteBlogEndpoint = `${API}/user/blog/${slug}`;
+        deleteBlogEndpoint = `${API}/api/user/blog/${slug}`;
     }
     return fetch(`${deleteBlogEndpoint}`, {
         method: 'DELETE',
@@ -94,6 +104,7 @@ export const removeBlog = (slug, token) => {
         }
     })
         .then(response => {
+            handleResponse(response);
             return response.json();
         })
         .catch(err => console.log(err));
@@ -109,6 +120,7 @@ export const updateBlog = (blog, token, slug) => {
         body: blog
     })
         .then(response => {
+            handleResponse(response);
             return response.json();
         })
         .catch(err => console.log(err));

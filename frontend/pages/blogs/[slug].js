@@ -7,6 +7,7 @@ import { API, DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
 import renderHTML from 'react-render-html';
 import moment from 'moment';
 import SmallCard from '../../components/blog/SmallCard';
+import DisqusThread from '../../components/DisqusThread';
 
 const SingleBlog = ({ blog, query }) => {
     const [related, setRelated] = useState([]);
@@ -68,7 +69,14 @@ const SingleBlog = ({ blog, query }) => {
             </div>
         ));
     };
-    
+    const showComments = () => {
+        console.log("blog.id",blog._id);
+        return (
+            <div>
+                <DisqusThread id={blog._id} title={blog.title} path={`/blog/${blog.slug}`} />
+            </div>
+        );
+    };
     return (
         <React.Fragment>
             {head()}
@@ -117,7 +125,7 @@ const SingleBlog = ({ blog, query }) => {
                         </div>
 
                         <div className="container pb-5">
-                            <p>show comments</p>
+                        {showComments()}
                         </div>
                     </article>
                 </main>
