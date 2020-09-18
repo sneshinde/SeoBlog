@@ -2,6 +2,7 @@ import { ButtonDropdown } from "reactstrap";
 import {useState, useEffect} from 'react';
 import { signin, authenticate, isAuth } from '../../actions/auth';
 import Router from "next/router";
+import LoginGoogle from './LoginGoogle';
 
 const SigninComponent = () => {
     const [values, setValues] = useState({
@@ -72,6 +73,7 @@ const SigninComponent = () => {
             {showLoading()}
             {showError()}
             {showMessage()}
+            <LoginGoogle />
             {signinForm()}
         </React.Fragment>
     );
