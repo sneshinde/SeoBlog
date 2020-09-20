@@ -34,7 +34,9 @@ const LoginGoogle = () => {
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 theme="dark"
+                disabled
             />
+            <p>Disabled since google login is not working</p>
         </div>
     );
 };

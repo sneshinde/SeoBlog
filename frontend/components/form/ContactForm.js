@@ -79,7 +79,8 @@ const ContactForm = ({ authorEmail }) => {
                 </div>
 
                 <div>
-                    <button className="btn btn-primary">{buttonText}</button>
+                    <button className="btn btn-primary" disabled>{buttonText}</button>
+                    <p>Disabled since sendgrid email api is not working</p>
                 </div>
             </form>
         );
