@@ -32,5 +32,8 @@
     "shortid": "^2.2.15",
     "slugify": "^1.4.0",
     "string-strip-html": "^4.3.22"
+  },
+  "engines": {
+    "node": "12.14.0"
   }
 }
