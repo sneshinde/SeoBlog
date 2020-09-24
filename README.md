@@ -24,7 +24,6 @@ npm install (run npm install for both backend and frontend)
 <p>Go to backend folder in terminal and run => npm run dev </p>
 <p>Go to frontend folder in terminal and run => npm run dev </p>
 
-<p>The application should open automatically.</p>
 
 
 
