@@ -11,19 +11,20 @@ MERN stack app using Node JS, React(Next JS), MongoDB, Express JS
   <li>Express JS</li>
   <li>Mongo DB</li>
 </ul> 
+</br>
+<p>Next, clone this repository/or fork the repository and install dependencies:</p>
 
-<p>Next, clone this repository and install dependencies:</p>
+git clone <url>
 
-git clone git@github.com:danielstern/express-react-fullstack.git
+npm install (run npm install for both backend and frontend)
 
-npm install
-
+</br>
 <p>Now, start the development environment with the following command:</p>
 
-Go to backend folder in terminal and run => npm run dev
-Go to frontend folder in terminal and run => npm run dev
+<p>Go to backend folder in terminal and run => npm run dev </p>
+<p>Go to frontend folder in terminal and run => npm run dev </p>
 
-The application should open automatically.
+<p>The application should open automatically.</p>
 
 
 
